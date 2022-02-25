@@ -1,7 +1,7 @@
 import { DeleteOutlined, DownOutlined, MinusOutlined } from '@ant-design/icons';
 import { Button, Dropdown, Input, Menu } from 'antd';
 import { fabric } from 'fabric';
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Controls() {
   const [color, setColor] = useState('#000000');
