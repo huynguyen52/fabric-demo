@@ -5,19 +5,24 @@ import React, { useEffect, useState } from 'react';
 
 function Controls() {
   const [color, setColor] = useState('#000000');
+  const [canvas, setCanvas] = useState<any>();
 
-  let canvas: fabric.Canvas;
   useEffect(() => {
-    canvas = new fabric.Canvas('canvas', {
-      width: 1000,
-      height: 600,
-      backgroundColor: '#ffffff',
-    });
-
-    canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
-    canvas.freeDrawingBrush.width = 1;
-    canvas.isDrawingMode = true;
+    setCanvas(
+      new fabric.Canvas('canvas', {
+        width: 1000,
+        height: 600,
+        backgroundColor: '#FFFFFF',
+      })
+    );
   }, []);
+  useEffect(() => {
+    if (canvas) {
+      canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
+      canvas.freeDrawingBrush.width = 1;
+      canvas.isDrawingMode = true;
+    }
+  }, [canvas]);
 
   const handleSizeBrush = (size: number) => {
     canvas.isDrawingMode = true;
@@ -32,7 +37,7 @@ function Controls() {
         const rect = new fabric.Rect({
           width: 100,
           height: 100,
-          fill: '#fff',
+          fill: color,
           stroke: '#000',
         });
         canvas.add(rect);
@@ -42,7 +47,7 @@ function Controls() {
         const elipse = new fabric.Ellipse({
           rx: 100,
           ry: 50,
-          fill: 'white',
+          fill: color,
           stroke: '#000',
         });
         canvas.add(elipse);
@@ -51,7 +56,7 @@ function Controls() {
       case 'circle':
         const circle = new fabric.Circle({
           radius: 50,
-          fill: 'white',
+          fill: color,
           stroke: '#000',
         });
         canvas.add(circle);
@@ -59,8 +64,8 @@ function Controls() {
         break;
       case 'line':
         const line = new fabric.Line([0, 0, 100, 150], {
-          fill: '#000',
-          stroke: '#000',
+          fill: color,
+          stroke: color,
           strokeWidth: 2,
         });
         canvas.add(line);
@@ -85,7 +90,7 @@ function Controls() {
     canvas.isDrawingMode = false;
     const text = new fabric.IText('Text here', {
       fontSize: 18,
-      fill: '#000',
+      fill: color,
     });
     canvas.add(text);
   };
@@ -106,8 +111,8 @@ function Controls() {
   };
 
   const handlePickColor = (e: React.ChangeEvent<HTMLInputElement>) => {
+    canvas.isDrawingMode = false;
     setColor(e.target.value);
-    console.log(canvas);
   };
 
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
